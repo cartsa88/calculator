@@ -1,0 +1,2 @@
+# calculator
+Ohjelmoinnin verkkokoulutus ennakkotehtävä
