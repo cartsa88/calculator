@@ -53,7 +53,7 @@ function calculate() {
     // 1. korvataan visuaaliset merkit oikeiksi operaattoreiksi
     let exprForEval = expression.replace(/÷/g, "/").replace(/×/g, "*");
 
-    // 2. muutetaan prosentit: 9% -> (9/100), 12.5% -> (12.5/100)
+    // 2. muutetaan prosentit: 9 % -> (9/100), 12.5% -> (12.5/100)
     exprForEval = exprForEval.replace(/(\d+(\.\d+)?)%/g, "($1/100)");
 
     // 3. lasketaan tulos
