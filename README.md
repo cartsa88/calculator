@@ -21,10 +21,9 @@ nappien asettelu (C, ⌫, %, numerot ja perusoperaattorit) ja ajatus lomakkeesta
 - MDN Web Docs – *addEventListener*, *querySelector* ja *querySelectorAll*  
   – nappien kuuntelu tapahtumilla (`click`) ja data-atribuutin (`data-*`) lukeminen.  
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math
-
-
+- Esimerkeissä käytettiin pistettä, mutta koska Suomessa ei käytetä pistettä, niin korjasin laskimen laskemaan pilkulla
+Tähän hyödynsin chat gpt:tä. Pyysin apuja, mihin kohtaan koodia minun tulee tehdä muutoksia.
 **Yleiset JS-perusteet ja tapahtumat**
-
 - MDN Web Docs – *Introduction to events* ja muut tapahtumiin liittyvät artikkelit  
   – ymmärrys siitä, miten nappien klikkaus laukaisee laskimen toimintoja.
 

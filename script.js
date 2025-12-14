@@ -1,6 +1,18 @@
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll(".btn");
 
+// Muuttaa käyttöliittymän luvun (pilkku) JS-luvuksi (piste)
+function uiToJsNumber(str) {
+  if (!str) return NaN;
+  return parseFloat(str.replace(",", "."));
+}
+
+// Muuttaa JS-luvun (piste) käyttöliittymämuotoon (pilkku)
+function jsNumberToUi(num) {
+  return String(num).replace(".", ",");
+}
+
+
 let expression = "";
 
 buttons.forEach((btn) => {
@@ -50,18 +62,24 @@ function backspace() {
 function calculate() {
   if (!expression) return;
   try {
-    // 1. korvataan visuaaliset merkit oikeiksi operaattoreiksi
+    // 1. korvaa visuaaliset merkit
     let exprForEval = expression.replace(/÷/g, "/").replace(/×/g, "*");
 
-    // 2. muutetaan prosentit: 9 % -> (9/100), 12.5% -> (12.5/100)
+    // 2. vaihdetaan kaikki pilkut pisteiksi JS:ää varten
+    exprForEval = exprForEval.replace(/,/g, ".");
+
+    // 3. prosentit: 9% -> (9/100), 12,5% -> (12.5/100)
     exprForEval = exprForEval.replace(/(\d+(\.\d+)?)%/g, "($1/100)");
 
-    // 3. lasketaan tulos
+    // 4. lasketaan
     const result = eval(exprForEval);
 
-    // Näytölle näkyviin alkuperäinen lauseke + tulos
-    updateDisplay(expression + "=" + result);
-    expression = String(result);
+    // Näytölle jää käyttöliittymämuoto (pilkut):
+    const resultUi = jsNumberToUi(result);
+    updateDisplay(expression + "=" + resultUi);
+
+    // Seuraava lasku jatkuu tuloksesta (pilkulla)
+    expression = resultUi;
   } catch (e) {
     updateDisplay("Virhe");
     expression = "";
@@ -69,54 +87,57 @@ function calculate() {
 }
 
 
+
 // ——— LISÄTOIMINNOT ———
 
-// Neliöjuuri: √x
+// √x
 function applySqrt() {
-  const current = display.value || expression;
-  if (!current) return;
-
-  const num = parseFloat(current);
+  const currentUi = expression || display.value;
+  const num = uiToJsNumber(currentUi);
   if (isNaN(num) || num < 0) {
     updateDisplay("Virhe");
     expression = "";
     return;
   }
   const result = Math.sqrt(num);
-  updateDisplay("√(" + num + ")=" + result);
-  expression = String(result);
+  const resultUi = jsNumberToUi(result);
+  updateDisplay(`√(${currentUi})=${resultUi}`);
+  expression = resultUi;
 }
 
 // x²
 function applySquare() {
-  const current = display.value || expression;
-  const num = parseFloat(current);
+  const currentUi = expression || display.value;
+  const num = uiToJsNumber(currentUi);
   if (isNaN(num)) return;
   const result = Math.pow(num, 2);
-  updateDisplay(num + "²=" + result);
-  expression = String(result);
+  const resultUi = jsNumberToUi(result);
+  updateDisplay(`${currentUi}²=${resultUi}`);
+  expression = resultUi;
 }
 
 // 1/x
 function applyInverse() {
-  const current = display.value || expression;
-  const num = parseFloat(current);
+  const currentUi = expression || display.value;
+  const num = uiToJsNumber(currentUi);
   if (isNaN(num) || num === 0) {
     updateDisplay("Virhe");
     expression = "";
     return;
   }
   const result = 1 / num;
-  updateDisplay("1/" + num + "=" + result);
-  expression = String(result);
+  const resultUi = jsNumberToUi(result);
+  updateDisplay(`1/${currentUi}=${resultUi}`);
+  expression = resultUi;
 }
 
-// ± (vaihda etumerkki)
+// ±
 function toggleSign() {
-  const current = display.value || expression || "0";
-  const num = parseFloat(current);
+  const currentUi = expression || display.value || "0";
+  const num = uiToJsNumber(currentUi);
   if (isNaN(num)) return;
   const result = num * -1;
-  updateDisplay(String(result));
-  expression = String(result);
+  const resultUi = jsNumberToUi(result);
+  expression = resultUi;
+  updateDisplay(resultUi);
 }
